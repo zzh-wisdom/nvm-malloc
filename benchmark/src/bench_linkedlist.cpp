@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
         payload_size_max = payload_size_min;
     }
     workerTimes.resize(n_threads, 0);
-    nvb::initialize("/mnt/pmfs/nvb", 0);
+    nvb::initialize("/mnt/pmem/zzh", 0);
     nvb::execute_in_pool(worker, n_threads);
     uint64_t avg = 0;
     for (auto t : workerTimes)

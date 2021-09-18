@@ -5,6 +5,6 @@
 *.test
 objects/
 benchmark/build
-benchmark/cached
-benchmark/plots
+# benchmark/cached
+# benchmark/plots
 

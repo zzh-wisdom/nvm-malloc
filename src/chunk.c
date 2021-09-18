@@ -22,7 +22,7 @@
 #define MAP_ANONYMOUS MAP_ANON
 #endif
 
-inline void error_and_exit(char *msg, ...) {
+static inline void error_and_exit(char *msg, ...) {
     va_list args;
     va_start(args, msg);
     vfprintf(stderr, msg, args);
@@ -40,7 +40,7 @@ static char            *meta_file_path = NULL;
 static uint64_t        next_chunk = 0;
 static pthread_mutex_t chunk_mtx = PTHREAD_MUTEX_INITIALIZER;
 
-inline int nvm_fallocate(int fd, off_t offset, off_t len) {
+static inline int nvm_fallocate(int fd, off_t offset, off_t len) {
 #ifdef __linux
     return posix_fallocate(fd, offset, len);
 #elif __APPLE__
@@ -58,7 +58,7 @@ inline int nvm_fallocate(int fd, off_t offset, off_t len) {
 #endif
 }
 
-inline int open_existing_file(char *path) {
+static inline int open_existing_file(char *path) {
     int fd=-1;
     struct stat stbuf;
     if (stat(path, &stbuf) < 0) {
@@ -69,7 +69,7 @@ inline int open_existing_file(char *path) {
     return fd;
 }
 
-inline int open_empty_or_create_file(char *path) {
+static inline int open_empty_or_create_file(char *path) {
     int fd=-1;
     struct stat stbuf;
     if (stat(path, &stbuf) < 0) {
@@ -81,7 +81,7 @@ inline int open_empty_or_create_file(char *path) {
     return fd;
 }
 
-inline uint64_t get_file_size(char *path) {
+static inline uint64_t get_file_size(char *path) {
     struct stat stbuf;
     if (stat(path, &stbuf) != 0) {
         return 0;

@@ -32,7 +32,9 @@ def getCacheFileName(binary, args, with_jemalloc):
                                                                       "true" if with_jemalloc else "false"))
 
 def runBenchmarkBinary(binary, parameters, with_jemalloc, miliseconds=False):
-    procString = "hwloc-bind node:1 " + os.path.join(os.getcwd(), "build", binary) + " " + " ".join([str(p) for p in parameters])
+    # procString = "hwloc-bind node:1 " + os.path.join(os.getcwd(), "build", binary) + " " + " ".join([str(p) for p in parameters])
+    procString = os.path.join(os.getcwd(), "build", binary) + " " + " ".join([str(p) for p in parameters])
+    print "proc string '%s'" % procString
     if with_jemalloc:
         procString = "LD_PRELOAD=%s %s" % (JEMALLOC_PATH, procString)
     env = {"LD_LIBRARY_PATH": os.path.join(os.getcwd(), "..")}
@@ -66,7 +68,7 @@ def plotBenchmark(benchname, args):
     fig = plt.figure()
     fig.set_size_inches(5.31, 3.54)
     plt.title(BENCHTITLES[benchname])
-    plt.ylabel("Time in $ms$")
+    plt.ylabel("Time in $us$")
     plt.xlabel("Parallel Threads")
     plt.xlim(1, args["threads_max"])
     plotX = arange(1, args["threads_max"]+1)
@@ -137,7 +139,7 @@ if __name__ == "__main__":
     parser.add_argument("--run-linkedlist", action="store_true")
     parser.add_argument("--run-recovery", action="store_true")
     parser.add_argument("--threads-min", type=int, default=1)
-    parser.add_argument("--threads-max", type=int, default=10)
+    parser.add_argument("--threads-max", type=int, default=64)
     parser.add_argument("--payload-min", type=int, default=64)
     parser.add_argument("--payload-max", type=int, default=64)
     parser.add_argument("--has-clflushopt", action="store_true")

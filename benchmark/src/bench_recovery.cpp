@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
     std::string rootId;
 
     // initialize nvm_malloc without recovery
-    nvb::initialize("/mnt/pmfs/nvb", 0);
+    nvb::initialize("/mnt/pmem/zzh", 0);
 
     // perform allocations and teardown
     for (uint64_t i=0; i<n_iterations; ++i) {
@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
 
     // initialize nvm_malloc with recovery, stop the time
     timer.start();
-    nvb::initialize("/mnt/pmfs/nvb", 1);
+    nvb::initialize("/mnt/pmem/zzh", 1);
     uint64_t usec = timer.stop();
     std::cout << usec << std::endl;
 

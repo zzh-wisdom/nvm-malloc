@@ -15,18 +15,18 @@ void worker(int id) {
     auto randomSize = std::bind(distribution, generator);
 
     timer.start();
-    for (int i=0; i<100000; ++i) {
+    for (int i=0; i<10000; ++i) {
         pointerlist[i] = (volatile char*) nvb::reserve(randomSize());
         memset((void*)pointerlist[i], 5, 64);
         nvb::activate((void*) pointerlist[i]);
     }
-    for (int i=0; i<100000; ++i) {
+    for (int i=0; i<10000; ++i) {
         nvb::free((void*) pointerlist[i]);
     }
 
 
     // save result
-    workerTimes[id] = timer.stop();
+    workerTimes[id] = timer.stop() / 10 / 2;
 }
 
 int main(int argc, char **argv) {
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
         allocation_size_max = allocation_size_min;
     }
     workerTimes.resize(n_threads, 0);
-    nvb::initialize("/mnt/pmfs/nvb", 0);
+    nvb::initialize("/mnt/pmem/zzh", 0);
     nvb::execute_in_pool(worker, n_threads);
     uint64_t avg = 0;
     for (auto t : workerTimes)
